@@ -1,0 +1,5 @@
+com/logsentinel/opendatadashboard/service/JSONStreamIterator.class
+com/logsentinel/opendatadashboard/data/Record.class
+com/logsentinel/opendatadashboard/RecordController.class
+com/logsentinel/opendatadashboard/service/RecordService.class
+com/logsentinel/opendatadashboard/OpendatadashboardApplication.class

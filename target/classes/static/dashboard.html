@@ -1,0 +1,98 @@
+{% extends 'base' %}
+{% block content %}
+<div class="row"><img class="row col-md-2 col-md-offset-5" src="/img/trails-logo.png" alt=""></div>
+
+<div class="row" style="padding-top:30px; padding-bottom: 15px;">
+    <div class="col-md-4 col-sm-4 col-xs-10">
+        <input id="searchInput" class="form-control" value="{{searchString}}" type="text"
+               placeholder="Search keywords..."/>
+    </div>
+    <button id="searchButton" x class="btn btn-default">Search</button>
+
+    {% if startTimestamp != 0 and endTimestamp != 0 %}
+    <input type="text" id="daterange" name="daterange" style="cursor: pointer"
+           value="{{ formatDate(startTimestamp,'EET', 'MM/dd/yyyy') }} - {{ formatDate(endTimestamp,'EET', 'MM/dd/yyyy') }}"/>
+    {% else %}
+    <input type="text" id="daterange" name="daterange" placeholder="time period" style="cursor: pointer" value=""/>
+    {%endif%}
+
+
+</div>
+
+
+<div class="row">
+
+    <div class="table-wrapper" style=" border: 1px; width 100%; overflow: auto;">
+        <table class="table table-striped dashboard-table" id="searchResults">
+            <thead>
+            <tr>
+                <th style="width: 15%" class="tableexport-string target datatable-column" style="width: 13%">Id</th>
+                <th style="width: 15%" class="tableexport-string target datatable-column" style="width: 13%">Action</th>
+                <th style="width: 60%" class="target datatable-column">Details</th>
+                <th class="tableexport-string target datatable-column">Timestmap</th>
+                <!--                <th class="target datatable-column hidden-xs">IP Address</th>-->
+                <!--                <th class="tableexport-string target datatable-column" style="width: 13%">EntryType</th>-->
+
+
+            </tr>
+            </thead>
+            <tbody>
+            {% for logEntry in logEntries %}
+            <tr>
+                <td class="tableexport-string target datatable-column"><a class="pull-left border-aero profile_thumb"
+                                                                          href="javascript:searchActor('{{ logEntry.actorId }}')"><i
+                        class="fa fa-user aero"></i>
+                    {{ logEntry.actorDisplayName is empty ? logEntry.id : logEntry.id }}</a>
+                    {% if logEntry.actorRoles is not empty %}
+                    {% for actorRole in logEntry.actorRoles %}
+                    &nbsp;(<a href="javascript:searchActorRole('{{ actorRole }}')">{{ actorRole }}</a>)
+                    {% endfor %}
+                    {% endif %}
+                </td>
+                <td class="tableexport-string target datatable-column"><a
+                        href="javascript:searchAction('{{ logEntry.action }}')">{{ logEntry.action }}</a></td>
+
+                {% if logEntry.details != "anonymized" %}
+
+                <td class="target database-column">
+
+                    <script>
+                        document.write(JSON.parse('{{logEntry.details | escape(strategy="js") }}')['consumer'])
+                        document.write("<br>")
+                        document.write(JSON.parse('{{logEntry.details | escape(strategy="js") }}')['reportName'])
+                        document.write("<br>")
+                        document.write(JSON.parse('{{logEntry.details | escape(strategy="js") }}')['producer'])
+                    </script>
+                </td>
+                {% else %}
+                <td class="target database-column">anonymized</td>
+                {% endif %}
+
+                <!--            <td class="tableexport-string target datatable-column" {%if logEntry.logLevel == 'ERROR' or logEntry.logLevel == 'CRITICAL' or logEntry.logLevel == 'FATAL'%}style="color:red"{% endif %}>{{ logEntry.loglevel}}</td>-->
+
+                <td class="tableexport-string target datatable-column">{{ formatDate(logEntry.timestamp,"EET", "MM/dd/yyyy HH:mm:ss") }}&nbsp;<a href="javascript:showTokenInfo('{{ logEntry.id }}');" title="Token info"><i class="fa fa-clock-o"></i></a></td>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <nav>
+        <ul class="pagination">
+            {%if currentPage>1 %}
+            <li class="page-item"><a class="page-link" href="/?{%if searchString!=''%}keyword={{searchString}}&{% endif %}page={{currentPage-1}}{%if startTimestamp!=0%}&start={{startTimestamp}}{% endif %}{%if endTimestamp!=0%}&end={{endTimestamp}}{% endif %}">Previous</a></li>
+            {% endif %}
+            <li class="page-item"><a class="page-link" style="background-color: #007bff; color:white;" role="button">{{currentPage}}</a></li>
+            <li class="page-item"><a class="page-link" href="/?{%if searchString!=''%}keyword={{searchString}}&{% endif %}page={{currentPage+1}}{%if startTimestamp!=0%}&start={{startTimestamp}}{% endif %}{%if endTimestamp!=0%}&end={{endTimestamp}}{% endif %}">{{currentPage+1}}</a></li>
+            <li class="page-item"><a class="page-link" href="/?{%if searchString!=''%}keyword={{searchString}}&{% endif %}page={{currentPage+2}}{%if startTimestamp!=0%}&start={{startTimestamp}}{% endif %}{%if endTimestamp!=0%}&end={{endTimestamp}}{% endif %}">{{currentPage+2}}</a></li>
+            <li class="page-item"><a class="page-link" href="/?{%if searchString!=''%}keyword={{searchString}}&{% endif %}page={{currentPage+3}}{%if startTimestamp!=0%}&start={{startTimestamp}}{% endif %}{%if endTimestamp!=0%}&end={{endTimestamp}}{% endif %}">{{currentPage+3}}</a></li>
+            <li class="page-item"><a class="page-link" href="/?{%if searchString!=''%}keyword={{searchString}}&{% endif %}page={{currentPage+1}}{%if startTimestamp!=0%}&start={{startTimestamp}}{% endif %}{%if endTimestamp!=0%}&end={{endTimestamp}}{% endif %}">Next</a></li>
+        </ul>
+    </nav>
+
+</div>
+
+<script>
+
+</script>
+{% endblock content%}
+
