@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.Arrays;
 
-public class Record {
+public class AuditLogEntry {
     private String id;
     private String timestamp;
     private String action;
@@ -30,7 +30,7 @@ public class Record {
     private String numericParams;
     private String standaloneHash;
 
-    public Record(String id, String timestamp,String action, String actorId, String[] actorRoles, String entityId,String entityType, String details, String applicationId, String ipAddress, String actorDisplayName, String entryType, int hashVersion, String previousEntryId, String hash, String timestampGroupHash, String timestampTokenId, String timestampTime, int timestampGroupSize, int estimatedEntrySize,String numericParams, String standaloneHash) {
+    public AuditLogEntry(String id, String timestamp, String action, String actorId, String[] actorRoles, String entityId, String entityType, String details, String applicationId, String ipAddress, String actorDisplayName, String entryType, int hashVersion, String previousEntryId, String hash, String timestampGroupHash, String timestampTokenId, String timestampTime, int timestampGroupSize, int estimatedEntrySize, String numericParams, String standaloneHash) {
         super();
         this.setId(id);
         this.setTimestamp(timestamp);
@@ -55,7 +55,7 @@ public class Record {
         this.numericParams=numericParams;
         this.setStandaloneHash(standaloneHash);
     }
-    public Record(){}
+    public AuditLogEntry(){}
 
     public void setId(String id) {
         this.id = id;

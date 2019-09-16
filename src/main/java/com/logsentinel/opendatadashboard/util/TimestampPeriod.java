@@ -1,11 +1,11 @@
 package com.logsentinel.opendatadashboard.util;
 
-public class TimeStampPeriod {
+public class TimestampPeriod {
     Long start;
     Long end;
 
     // if end=0 - no upper bound
-    public TimeStampPeriod(long start, long end) {
+    public TimestampPeriod(long start, long end) {
         assert (start < end || (start > 0 && end == 0) || (start == 0 && end == 0));
         this.start = start;
         this.end = end;
@@ -21,9 +21,9 @@ public class TimeStampPeriod {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof TimeStampPeriod) {
-            return this.start.equals(((TimeStampPeriod) obj).start) &&
-                    this.end.equals(((TimeStampPeriod) obj).end);
+        if (obj instanceof TimestampPeriod) {
+            return this.start.equals(((TimestampPeriod) obj).start) &&
+                    this.end.equals(((TimestampPeriod) obj).end);
         }
         return false;
     }

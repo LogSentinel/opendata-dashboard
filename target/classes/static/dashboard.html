@@ -1,6 +1,6 @@
 {% extends 'base' %}
 {% block content %}
-<div class="row"><img class="row col-md-2 col-md-offset-5" src="/img/trails-logo.png"  alt=""></div>
+<div class="row"><img class="row col-md-2 col-md-offset-5" src="/img/trails-logo.png" alt=""></div>
 
 <div class="row" style="padding-top:30px; padding-bottom: 15px;">
     <div class="col-md-4 col-sm-4 col-xs-10">
@@ -10,15 +10,14 @@
     <button id="searchButton" x class="btn btn-default">Search</button>
 
     {% if startTimestamp != 0 and endTimestamp != 0 %}
-    <input type="text" id="daterange" name="daterange" style="cursor: pointer" value="{{ formatDate(startTimestamp,'EET', 'MM/dd/yyyy') }} - {{ formatDate(endTimestamp,'EET', 'MM/dd/yyyy') }}" />
+    <input type="text" id="daterange" name="daterange" style="cursor: pointer"
+           value="{{ formatDate(startTimestamp,'EET', 'MM/dd/yyyy') }} - {{ formatDate(endTimestamp,'EET', 'MM/dd/yyyy') }}"/>
     {% else %}
-    <input type="text" id="daterange" name="daterange" style="cursor: pointer" value="" />
+    <input type="text" id="daterange" name="daterange" placeholder="time period" style="cursor: pointer" value=""/>
     {%endif%}
 
 
 </div>
-
-
 
 
 <div class="row">
@@ -28,11 +27,11 @@
             <thead>
             <tr>
                 <th style="width: 15%" class="tableexport-string target datatable-column" style="width: 13%">Id</th>
-                <th style="width: 15%"class="tableexport-string target datatable-column" style="width: 13%">Action</th>
-                <th style="width: 30%" class="target datatable-column">Details</th>
+                <th style="width: 15%" class="tableexport-string target datatable-column" style="width: 13%">Action</th>
+                <th style="width: 60%" class="target datatable-column">Details</th>
                 <th class="tableexport-string target datatable-column">Timestmap</th>
-                <th class="target datatable-column hidden-xs">IP Address</th>
-                <th class="tableexport-string target datatable-column" style="width: 13%">EntryType</th>
+                <!--                <th class="target datatable-column hidden-xs">IP Address</th>-->
+                <!--                <th class="tableexport-string target datatable-column" style="width: 13%">EntryType</th>-->
 
 
             </tr>
@@ -53,28 +52,9 @@
                 <td class="tableexport-string target datatable-column"><a
                         href="javascript:searchAction('{{ logEntry.action }}')">{{ logEntry.action }}</a></td>
 
-<!--                {% if logEntry.additionalParams != null and logEntry.additionalParams.binaryContent == 'true' %}-->
-<!--                <td><a target="_blank" href="/binaryDownload/{{ logEntry.id }}">Download binary content</a></td>-->
-<!--                {% else %}-->
-<!--                {% autoescape "url_param" %}-->
-<!--                <td class="target datatable-column"-->
-<!--                    onclick="showDetails('{{ logEntry.details }}', '{{ logEntry.action }}', '{{ logEntry.entryType }}', '{{ logEntry.applicationId }}', {{ logEntry.encryptedkeywordsList != null and logEntry.encryptedkeywordsList is not empty }})">-->
-<!--                    {% endautoescape %}-->
-<!--                    <code class="{{logEntry.encryptedkeywords != null and logEntry.encryptedkeywords != '' ? 'entryDetails encrypted' :'entryDetails'}}"-->
-<!--                          data-appid="{{ logEntry.applicationId }}"-->
-<!--                    >-->
-
-<!--                        {% if logEntry.encryptedkeywordsList == null or logEntry.encryptedkeywordsList is empty %}-->
-<!--                        {{ logEntry.details | abbreviate(100) }}-->
-<!--                        {% else %}-->
-<!--                        Encrypted! Click to decrypt-->
-<!--                        {% endif %}-->
-<!--                    </code>-->
-<!--                </td>-->
-<!--                {% endif %}-->
                 {% if logEntry.details != "anonymized" %}
 
-                <td class="target database-column" >
+                <td class="target database-column">
 
                     <script>
                         document.write(JSON.parse('{{logEntry.details | escape(strategy="js") }}')['consumer'])
@@ -82,11 +62,7 @@
                         document.write(JSON.parse('{{logEntry.details | escape(strategy="js") }}')['reportName'])
                         document.write("<br>")
                         document.write(JSON.parse('{{logEntry.details | escape(strategy="js") }}')['producer'])
-
                     </script>
-
-
-
                 </td>
                 {% else %}
                 <td class="target database-column">anonymized</td>
@@ -95,22 +71,28 @@
                 <!--            <td class="tableexport-string target datatable-column" {%if logEntry.logLevel == 'ERROR' or logEntry.logLevel == 'CRITICAL' or logEntry.logLevel == 'FATAL'%}style="color:red"{% endif %}>{{ logEntry.loglevel}}</td>-->
 
                 <td class="tableexport-string target datatable-column">{{ formatDate(logEntry.timestamp,"EET", "MM/dd/yyyy HH:mm:ss") }}&nbsp;<a href="javascript:showTokenInfo('{{ logEntry.id }}');" title="Token info"><i class="fa fa-clock-o"></i></a></td>
-<!--                <td class="tableexport-string target datatable-column">{{ formatDate(logEntry.timestamp,"UTC", "dd.MM.yyyy HH:mm:ss") }}&nbsp;<a href="javascript:showTokenInfo('{{ logEntry.id }}');" title="Token info"><i class="fa fa-clock-o"></i></a></td>-->
-                <td class="target datatable-column hidden-xs">
-                    {{logEntry.ipAddress}}</td>
-                <td class="tableexport-string target datatable-column">{{logEntry.entryType}}</td>
-            {% endfor %}
+                {% endfor %}
             </tbody>
         </table>
     </div>
-    <a type="button" href="{%if currentPage>1 %}/?{%if searchString!=''%}keyWord={{searchString}}&{% endif %}page={{currentPage-1}}{%if startTimestamp!=0%}&start={{startTimestamp}}{% endif %}{%if endTimestamp!=0%}&end={{endTimestamp}}{% endif %} {% endif %}"
-       id="previousPageButton" class="btn btn-info">Prev Page</a>
-    <a type="button" href="/?{%if searchString!=''%}keyWord={{searchString}}&{% endif %}page={{currentPage+1}}{%if startTimestamp!=0%}&start={{startTimestamp}}{% endif %}{%if endTimestamp!=0%}&end={{endTimestamp}}{% endif %}"
-       id="nextPageButton" class="btn btn-info">Next Page</a>
+
+    <nav>
+        <ul class="pagination">
+            {%if currentPage>1 %}
+            <li class="page-item"><a class="page-link" href="/?{%if searchString!=''%}keyword={{searchString}}&{% endif %}page={{currentPage-1}}{%if startTimestamp!=0%}&start={{startTimestamp}}{% endif %}{%if endTimestamp!=0%}&end={{endTimestamp}}{% endif %}">Previous</a></li>
+            {% endif %}
+            <li class="page-item"><a class="page-link" style="background-color: #007bff; color:white;" role="button">{{currentPage}}</a></li>
+            <li class="page-item"><a class="page-link" href="/?{%if searchString!=''%}keyword={{searchString}}&{% endif %}page={{currentPage+1}}{%if startTimestamp!=0%}&start={{startTimestamp}}{% endif %}{%if endTimestamp!=0%}&end={{endTimestamp}}{% endif %}">{{currentPage+1}}</a></li>
+            <li class="page-item"><a class="page-link" href="/?{%if searchString!=''%}keyword={{searchString}}&{% endif %}page={{currentPage+2}}{%if startTimestamp!=0%}&start={{startTimestamp}}{% endif %}{%if endTimestamp!=0%}&end={{endTimestamp}}{% endif %}">{{currentPage+2}}</a></li>
+            <li class="page-item"><a class="page-link" href="/?{%if searchString!=''%}keyword={{searchString}}&{% endif %}page={{currentPage+3}}{%if startTimestamp!=0%}&start={{startTimestamp}}{% endif %}{%if endTimestamp!=0%}&end={{endTimestamp}}{% endif %}">{{currentPage+3}}</a></li>
+            <li class="page-item"><a class="page-link" href="/?{%if searchString!=''%}keyword={{searchString}}&{% endif %}page={{currentPage+1}}{%if startTimestamp!=0%}&start={{startTimestamp}}{% endif %}{%if endTimestamp!=0%}&end={{endTimestamp}}{% endif %}">Next</a></li>
+        </ul>
+    </nav>
+
 </div>
 
 <script>
 
 </script>
-    {% endblock content%}
+{% endblock content%}
 

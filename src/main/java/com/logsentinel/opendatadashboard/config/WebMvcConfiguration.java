@@ -36,11 +36,6 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
                 .loader(new ClasspathLoader())
                 .extension(new SpringExtension(), new OpenDataDashboardExtension())
                 .addEscapingStrategy("jsFull", new JavascriptEscapeStrategy());
-
-//        if (environment.equals("dev")) {
-//            builder.cacheActive(false);
-//        }
-
         return builder.build();
     }
 
@@ -73,7 +68,6 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
         public Map<String, Function> getFunctions() {
             Map<String, Function> functions = new HashMap<>();
             functions.put("formatDate", new FormatDatePebbleFunction());
-            functions.put("containsString", new ContainsStringPebbleFunction());
             return functions;
         }
 

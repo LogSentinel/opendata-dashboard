@@ -5,26 +5,30 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.logsentinel.opendatadashboard.data.Record;
+import com.logsentinel.opendatadashboard.data.AuditLogEntry;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 
 
 @Service
 public class JSONStreamIterator {
 
-    private String recordsURL;
-    private Iterator<Record> streamIterator;
-    private int seek;
+    private String recordsPath;
+    private Iterator<AuditLogEntry> streamIterator;
+    private int seekIndex;
 
     public JSONStreamIterator() {
-        this.recordsURL = "https://auditlog-ls.egov.bg/opendata/application/cc02fc50-5cd4-11e8-bf32-256719737274";
-        this.seek=0;
+        this.recordsPath = "/home/daniel/opendataLogs";
+        this.seekIndex = 0;
 
         try {
             InitIterator();
@@ -35,7 +39,9 @@ public class JSONStreamIterator {
 
 
     private void InitIterator() throws IOException {
-        InputStreamReader inputStreamReader = new InputStreamReader(new GZIPInputStream(new URL(recordsURL).openStream()));
+
+        File file=new File(this.recordsPath);
+        InputStreamReader inputStreamReader = new InputStreamReader(new GZIPInputStream(new FileInputStream(file)));
 
         ObjectMapper mapper = new ObjectMapper();
         JsonFactory factory = new JsonFactory();
@@ -49,32 +55,39 @@ public class JSONStreamIterator {
         //seeking iterator to start of first object
         JsonToken token = parser.nextToken();
 
-        if (token == null) throw new IOException("Invalid JSON.");
-        if (!JsonToken.START_ARRAY.equals(token)) throw new IOException("JSON is not an array.");
+        if (token == null) {
+            throw new IOException("Invalid JSON.");
+        }
+        if (!JsonToken.START_ARRAY.equals(token)) {
+            throw new IOException("JSON is not an array.");
+        }
 
-        do {token = parser.nextToken();}
+        do {
+            token = parser.nextToken();
+        }
         while (JsonToken.START_OBJECT.equals(token));
 
-        //setting iterator to parse Record class
-        this.streamIterator = parser.readValuesAs(Record.class);
+        //setting iterator to parse AuditLogEntry class
+        this.streamIterator = parser.readValuesAs(AuditLogEntry.class);
     }
 
-    public Record next() {
+    public AuditLogEntry next() {
         if (this.streamIterator != null) {
-            this.seek++;
-            Record record = null;
+            this.seekIndex++;
+            AuditLogEntry entry = null;
             try {
-                record = this.streamIterator.next();
+                entry = this.streamIterator.next();
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                Logger logger = Logger.getLogger(this.getClass().getName());
+                logger.log(Level.FINE,e.getMessage());
             }
-                return record;
-            }
-            return null;
+            return entry;
         }
+        return null;
+    }
 
 
     public int getSeek() {
-        return seek;
+        return seekIndex;
     }
 }

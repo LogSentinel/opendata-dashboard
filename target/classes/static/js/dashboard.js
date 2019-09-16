@@ -325,7 +325,7 @@ function performSearch(page) {
 function search(){
     var query="/"
 
-    var keyWord=jsEscape($("#searchInput").val().trim())
+    var keyword=jsEscape($("#searchInput").val().trim())
 
     startDate = new Date($("#daterange").val().split(" - ")[0]).getTime();
     endDate = new Date($("#daterange").val().split(" - ")[1]).getTime();
@@ -337,8 +337,8 @@ function search(){
 
     var params=[];
 
-    if(keyWord!=="")
-    params.push("keyWord="+keyWord);
+    if(keyword!=="")
+    params.push("keyword="+keyword);
     if(startDate!=="")
     params.push("start="+startDate);
     if(endDate!=="")
