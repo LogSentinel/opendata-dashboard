@@ -2,6 +2,11 @@ package com.logsentinel.opendatadashboard.data;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.core.ObjectCodec;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.logsentinel.opendatadashboard.util.DetailsDeserializer;
 
 import java.util.Arrays;
 
@@ -13,7 +18,11 @@ public class AuditLogEntry {
     private String[] actorRoles;
     private String entityId;
     private String entityType;
-    private String details;
+
+    @JsonProperty("details")
+    @JsonDeserialize(using = DetailsDeserializer.class)
+    private Object details;
+
     private String applicationId;
     private String ipAddress;
     private String actorDisplayName;
@@ -30,7 +39,7 @@ public class AuditLogEntry {
     private String numericParams;
     private String standaloneHash;
 
-    public AuditLogEntry(String id, String timestamp, String action, String actorId, String[] actorRoles, String entityId, String entityType, String details, String applicationId, String ipAddress, String actorDisplayName, String entryType, int hashVersion, String previousEntryId, String hash, String timestampGroupHash, String timestampTokenId, String timestampTime, int timestampGroupSize, int estimatedEntrySize, String numericParams, String standaloneHash) {
+    public AuditLogEntry(String id, String timestamp, String action, String actorId, String[] actorRoles, String entityId, String entityType, Object details, String applicationId, String ipAddress, String actorDisplayName, String entryType, int hashVersion, String previousEntryId, String hash, String timestampGroupHash, String timestampTokenId, String timestampTime, int timestampGroupSize, int estimatedEntrySize, String numericParams, String standaloneHash) {
         super();
         this.setId(id);
         this.setTimestamp(timestamp);
@@ -78,7 +87,7 @@ public class AuditLogEntry {
     public void setEntityType(String entityType) {
         this.entityType = entityType;
     }
-    public void setDetails(String details) {
+    public void setDetails(Object details) {
         this.details = details;
     }
     public void setApplicationId(String applicationId) {
@@ -148,7 +157,7 @@ public class AuditLogEntry {
         return entityType;
     }
 
-    public String getDetails() {
+    public Object getDetails() {
         return details;
     }
 

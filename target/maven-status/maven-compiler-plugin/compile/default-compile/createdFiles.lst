@@ -1,5 +1,11 @@
+com/logsentinel/opendatadashboard/util/FormatDatePebbleFunction.class
+com/logsentinel/opendatadashboard/config/WebMvcConfiguration$OpenDataDashboardExtension.class
 com/logsentinel/opendatadashboard/service/JSONStreamIterator.class
-com/logsentinel/opendatadashboard/data/Record.class
-com/logsentinel/opendatadashboard/RecordController.class
-com/logsentinel/opendatadashboard/service/RecordService.class
+com/logsentinel/opendatadashboard/api/DashboardController.class
+com/logsentinel/opendatadashboard/data/AuditLogEntry.class
+com/logsentinel/opendatadashboard/util/SearchUtil.class
+com/logsentinel/opendatadashboard/config/WebMvcConfiguration.class
 com/logsentinel/opendatadashboard/OpendatadashboardApplication.class
+com/logsentinel/opendatadashboard/config/WebMvcConfiguration$JavascriptEscapeStrategy.class
+com/logsentinel/opendatadashboard/util/TimestampPeriod.class
+com/logsentinel/opendatadashboard/util/ContainsStringPebbleFunction.class
