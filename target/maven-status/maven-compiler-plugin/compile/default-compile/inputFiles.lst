@@ -1,5 +1,9 @@
+/home/daniel/Desktop/opendatadashboard/src/main/java/com/logsentinel/opendatadashboard/api/DashboardController.java
 /home/daniel/Desktop/opendatadashboard/src/main/java/com/logsentinel/opendatadashboard/OpendatadashboardApplication.java
-/home/daniel/Desktop/opendatadashboard/src/main/java/com/logsentinel/opendatadashboard/data/Record.java
+/home/daniel/Desktop/opendatadashboard/src/main/java/com/logsentinel/opendatadashboard/util/SearchUtil.java
+/home/daniel/Desktop/opendatadashboard/src/main/java/com/logsentinel/opendatadashboard/util/TimestampPeriod.java
+/home/daniel/Desktop/opendatadashboard/src/main/java/com/logsentinel/opendatadashboard/util/ContainsStringPebbleFunction.java
+/home/daniel/Desktop/opendatadashboard/src/main/java/com/logsentinel/opendatadashboard/util/FormatDatePebbleFunction.java
 /home/daniel/Desktop/opendatadashboard/src/main/java/com/logsentinel/opendatadashboard/service/JSONStreamIterator.java
-/home/daniel/Desktop/opendatadashboard/src/main/java/com/logsentinel/opendatadashboard/RecordController.java
-/home/daniel/Desktop/opendatadashboard/src/main/java/com/logsentinel/opendatadashboard/service/RecordService.java
+/home/daniel/Desktop/opendatadashboard/src/main/java/com/logsentinel/opendatadashboard/data/AuditLogEntry.java
+/home/daniel/Desktop/opendatadashboard/src/main/java/com/logsentinel/opendatadashboard/config/WebMvcConfiguration.java

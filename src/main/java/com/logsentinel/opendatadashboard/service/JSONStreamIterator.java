@@ -6,8 +6,13 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.logsentinel.opendatadashboard.data.AuditLogEntry;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -18,30 +23,25 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 
-
 @Service
 public class JSONStreamIterator {
 
+    @Value("${data.path}")
     private String recordsPath;
+
     private Iterator<AuditLogEntry> streamIterator;
     private int seekIndex;
 
-    public JSONStreamIterator() {
-        this.recordsPath = "/home/daniel/opendataLogs";
-        this.seekIndex = 0;
 
-        try {
-            InitIterator();
-        } catch (IOException ioe) {
-            System.out.println(ioe.getMessage());
-        }
+    public JSONStreamIterator() {
+        this.seekIndex = 0;
     }
 
+    @PostConstruct
+    public void InitIterator() throws IOException {
 
-    private void InitIterator() throws IOException {
-
-        File file=new File(this.recordsPath);
-        InputStreamReader inputStreamReader = new InputStreamReader(new GZIPInputStream(new FileInputStream(file)));
+        File file = new File(this.recordsPath);
+        InputStreamReader inputStreamReader = new InputStreamReader(new GZIPInputStream(new FileInputStream(file)), "UTF-8");
 
         ObjectMapper mapper = new ObjectMapper();
         JsonFactory factory = new JsonFactory();
@@ -79,7 +79,7 @@ public class JSONStreamIterator {
                 entry = this.streamIterator.next();
             } catch (Exception e) {
                 Logger logger = Logger.getLogger(this.getClass().getName());
-                logger.log(Level.FINE,e.getMessage());
+                logger.log(Level.FINE, e.getMessage());
             }
             return entry;
         }

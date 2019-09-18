@@ -16,7 +16,7 @@ public class SearchUtil {
             if (record.getActorDisplayName().toLowerCase().contains(kw)) {
                 return true;
             }
-            if (record.getDetails().toLowerCase().contains(kw)) {
+            if (record.getDetails().toString().toLowerCase().contains(kw)) {
                 return true;
             }
             if (record.getId().toLowerCase().contains(kw)) {
